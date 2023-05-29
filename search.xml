@@ -4,23 +4,48 @@
   
     
     <entry>
-      <title>文章测试 记录</title>
-      <link href="/2023/05/26/%E6%96%87%E7%AB%A0%E6%B5%8B%E8%AF%95/"/>
-      <url>/2023/05/26/%E6%96%87%E7%AB%A0%E6%B5%8B%E8%AF%95/</url>
+      <title>计算机组成原理 绪论</title>
+      <link href="/2023/05/30/0%E8%AE%A1%E7%AE%97%E6%9C%BA%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20%E8%AF%BE%E7%A8%8B%E4%BB%B7%E7%BB%8D%E5%92%8C%E7%BB%AA%E8%AE%BA/"/>
+      <url>/2023/05/30/0%E8%AE%A1%E7%AE%97%E6%9C%BA%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20%E8%AF%BE%E7%A8%8B%E4%BB%B7%E7%BB%8D%E5%92%8C%E7%BB%AA%E8%AE%BA/</url>
       
-        <content type="html"><![CDATA[<h3 id="两种-Post-Front-matter-和-Page-Front-matter"><a href="#两种-Post-Front-matter-和-Page-Front-matter" class="headerlink" title="两种 Post Front-matter 和 Page Front-matter"></a>两种 Post Front-matter 和 Page Front-matter</h3><ul><li>Page Front-matter 用于页面配置</li><li>Post Front-matter 用于文章页配置</li></ul><h4 id="1、Post-Front-matter"><a href="#1、Post-Front-matter" class="headerlink" title="1、Post Front-matter"></a>1、Post Front-matter</h4><p>模板</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title:</span><br><span class="line">date:</span><br><span class="line">updated:</span><br><span class="line">type:</span><br><span class="line">comments:</span><br><span class="line">description:</span><br><span class="line">keywords:</span><br><span class="line">top_img:</span><br><span class="line">mathjax:</span><br><span class="line">katex:</span><br><span class="line">aside:</span><br><span class="line">aplayer:</span><br><span class="line">highlight_shrink:</span><br><span class="line">---</span><br></pre></td></tr></table></figure><p>解释<br>title【必需】页面标题<br>date【必需】页面创建日期<br>type【必需】标签、分类和友情链接三个页面需要配置<br>updated【可选】页面更新日期<br>description【可选】页面描述<br>keywords【可选】页面关键字<br>comments【可选】显示页面评论模块 (默认 true)<br>top_img【可选】页面顶部图片<br>mathjax【可选】显示mathjax (当设置mathjax的per_page: false时，才需要配置，默认 false)<br>katex【可选】显示katex (当设置katex的per_page: false时，才需要配置，默认 false)<br>aside【可选】显示侧边栏 (默认 true)<br>aplayer【可选】在需要的页面加载aplayer的js和css,请参考文章下面的音乐 配置<br>highlight_shrink【可选】配置代码框是否展开 (true&#x2F;false) (默认为设置中highlight_shrink的配置)</p><h4 id="2、Page-Front-matter"><a href="#2、Page-Front-matter" class="headerlink" title="2、Page Front-matter"></a>2、Page Front-matter</h4><p>模板</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line">title:</span><br><span class="line">date:</span><br><span class="line">updated:</span><br><span class="line">tags:</span><br><span class="line">categories:</span><br><span class="line">keywords:</span><br><span class="line">description:</span><br><span class="line">top_img:</span><br><span class="line">comments:</span><br><span class="line">cover:</span><br><span class="line">toc:</span><br><span class="line">toc_number:</span><br><span class="line">toc_style_simple:</span><br><span class="line">copyright:</span><br><span class="line">copyright_author:</span><br><span class="line">copyright_author_href:</span><br><span class="line">copyright_url:</span><br><span class="line">copyright_info:</span><br><span class="line">mathjax:</span><br><span class="line">katex:</span><br><span class="line">aplayer:</span><br><span class="line">highlight_shrink:</span><br><span class="line">aside:</span><br><span class="line">abcjs:</span><br><span class="line">---</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>解释<br>title【必需】文章标题<br>date【必需】文章创建日期<br>updated【可选】文章更新日期<br>tags【可选】文章标签<br>categories【可选】文章分类<br>keywords【可选】文章关键字<br>description【可选】文章描述<br>top_img【可选】文章顶部图片<br>cover【可选】文章缩略图(如果没有设置top_img,文章页顶部将显示缩略图，可设为false&#x2F;图片地址&#x2F;留空)<br>comments【可选】显示文章评论模块(默认 true)<br>toc【可选】显示文章TOC(默认为设置中toc的enable配置)<br>toc_number【可选】显示toc_number(默认为设置中toc的number配置)<br>toc_style_simple【可选】显示 toc 简洁模式<br>copyright【可选】显示文章版权模块(默认为设置中post_copyright的enable配置)<br>copyright_author【可选】文章版权模块的文章作者<br>copyright_author_href【可选】文章版权模块的文章作者链接<br>copyright_url【可选】文章版权模块的文章连结链接<br>copyright_info【可选】文章版权模块的版权声明文字<br>mathjax【可选】显示mathjax(当设置 mathjax 的 per_page: false 时，才需要配置，默认 false )<br>katex【可选】显示 katex (当设置 katex 的 per_page: false 时，才需要配置，默认 false )<br>aplayer【可选】在需要的页面加载 aplayer 的 js 和 css,请参考文章下面的音乐 配置<br>highlight_shrink【可选】配置代码框是否展开(true&#x2F;false)(默认为设置中 highlight_shrink 的配置)<br>aside【可选】显示侧边栏 (默认 true)<br>abcjs【可选】加载 abcjs (当设置 abcjs 的 per_page: false 时，才需要配置，默认 false )</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="计算机-操作系统-课程价绍和绪论"><a href="#计算机-操作系统-课程价绍和绪论" class="headerlink" title="计算机 操作系统 课程价绍和绪论"></a>计算机 操作系统 课程价绍和绪论</h1><p><strong>（1）使用的视频教材</strong></p><p>【（电子科技大学）计算机操作系统】 <a href="https://www.bilibili.com/video/BV18741137LS/?p=2&share_source=copy_web&vd_source=3601770997361fde771b5921a14e0f8f">https://www.bilibili.com/video/BV18741137LS/?p=2&amp;share_source=copy_web&amp;vd_source=3601770997361fde771b5921a14e0f8f</a></p><p>（2）四大部分，<strong>系统的原理与设计</strong>，<strong>算法</strong>，<strong>数据结构</strong>以及<strong>英文术语</strong>！</p><p>（3）基本框架</p><p><strong>进程的管理–》cpu 、存储的管理–&gt;内存、设备的管理和文件管理。</strong></p>]]></content>
       
       
       <categories>
           
-          <category> 测试 </category>
+          <category> 计算机组成原理 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 测试文章 </tag>
+            <tag> 计算机组成原理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机组成原理 第一章</title>
+      <link href="/2023/05/30/1%E8%AE%A1%E7%AE%97%E6%9C%BA%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20%E7%AC%AC%E4%B8%80%E7%AB%A0/"/>
+      <url>/2023/05/30/1%E8%AE%A1%E7%AE%97%E6%9C%BA%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%20%E7%AC%AC%E4%B8%80%E7%AB%A0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="计算机-操作系统-第一章"><a href="#计算机-操作系统-第一章" class="headerlink" title="计算机 操作系统 第一章"></a>计算机 操作系统 第一章</h1><h2 id="1、什么是操作系统"><a href="#1、什么是操作系统" class="headerlink" title="1、什么是操作系统"></a>1、什么是操作系统</h2><p><img src="/./image/post/cpzcyl/1/1.jpg"></p><p>四种观点</p><p><img src="/./image/post/cpzcyl/1/2.jp"></p><p>  在每一个层次上看操作系统都是不一样的。</p><h2 id="2、需求分析"><a href="#2、需求分析" class="headerlink" title="2、需求分析"></a>2、需求分析</h2><p>先做需求分析是很重要的。所以第一步做的是os的需求分析。</p><h3 id="2-1-功能需求和非功能需求"><a href="#2-1-功能需求和非功能需求" class="headerlink" title="2.1 功能需求和非功能需求"></a>2.1 功能需求和非功能需求</h3><p>功能需求</p><ul><li>提供<strong>用户操作</strong>的命令 用户命令</li><li><strong>应用程序</strong>需要的系统调用system call</li></ul><p>API：由程序调用所构成的集合被成为程序接口或者应用编程接口</p><p><img src="/./image/post/cpzcyl/1/3.jpg"></p><p>操作系统为上面的用户和程序提供了了API接口和操作命令。</p><h3 id="2-2-非功能性需求"><a href="#2-2-非功能性需求" class="headerlink" title="2.2 非功能性需求"></a>2.2 非功能性需求</h3><ul><li>性能和效率 一直在追求的指标</li></ul><blockquote><p><strong>吞吐量：</strong> </p><p><strong>响应时间：</strong></p><p><strong>分时系统的支持用户数：</strong>、</p></blockquote><ul><li>公平性</li><li>可靠性</li><li>安全性</li><li>可伸缩性</li><li>可扩展性</li></ul><h3 id="2-3-对硬件平台的依赖"><a href="#2-3-对硬件平台的依赖" class="headerlink" title="2.3 对硬件平台的依赖"></a>2.3 对硬件平台的依赖</h3><p>计时器timer</p><p>io中断io interruput</p><p>DMA 直接存取</p><p>存储保护的机制</p><p>…..</p><p>这些都是硬件上直接实现的，如果用操作系统和软件执行会出问题。此后的算法和原理离不开硬件的支持。</p><h2 id="3、基本的概念"><a href="#3、基本的概念" class="headerlink" title="3、基本的概念"></a>3、基本的概念</h2><p><strong>作业</strong>：job，计算机用户在一次上机的过程中要求计算机系统为其所作的工作的集合。</p><p><strong>作业步</strong>： 用一组命令来定义一个作业，每一个命令称为作业步。</p><p>作业控制语言</p><p><strong>联机和脱机</strong>： 收到此系统的控制就是联机，不受到控制则为脱机。</p><p><em><em>线程(THrea)<strong>：程序的一次相对独立的运行过程，在现代os中，线程是</strong></em>系统调度的最小单位</em>**。 </p><p>**进程(Process)**：系统分配资源的基本对象，现代os中进程是系统中<font color = "red"><em><strong>拥有资源的最小实体</strong></em></font>，传统的os中进程也是调度的最小单位。</p><p><strong>虚拟存储</strong>：进程的逻辑地址空间，他是现代os对计算机系统中多级物理存储体系进行高度抽象的结果。</p><p><strong>文件</strong>：命名了字节流，现代os中对计算机系统中种类繁多的外部设备进行高度抽象的结果。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机组成原理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机组成原理 </tag>
             
         </tags>
       
@@ -46,6 +71,31 @@
         <tags>
             
             <tag> 算法 学习 广度优先 dfs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>文章测试 记录</title>
+      <link href="/2023/05/26/%E6%96%87%E7%AB%A0%E6%B5%8B%E8%AF%95/"/>
+      <url>/2023/05/26/%E6%96%87%E7%AB%A0%E6%B5%8B%E8%AF%95/</url>
+      
+        <content type="html"><![CDATA[<h3 id="两种-Post-Front-matter-和-Page-Front-matter"><a href="#两种-Post-Front-matter-和-Page-Front-matter" class="headerlink" title="两种 Post Front-matter 和 Page Front-matter"></a>两种 Post Front-matter 和 Page Front-matter</h3><ul><li>Page Front-matter 用于页面配置</li><li>Post Front-matter 用于文章页配置</li></ul><h4 id="1、Post-Front-matter"><a href="#1、Post-Front-matter" class="headerlink" title="1、Post Front-matter"></a>1、Post Front-matter</h4><p>模板</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title:</span><br><span class="line">date:</span><br><span class="line">updated:</span><br><span class="line">type:</span><br><span class="line">comments:</span><br><span class="line">description:</span><br><span class="line">keywords:</span><br><span class="line">top_img:</span><br><span class="line">mathjax:</span><br><span class="line">katex:</span><br><span class="line">aside:</span><br><span class="line">aplayer:</span><br><span class="line">highlight_shrink:</span><br><span class="line">---</span><br></pre></td></tr></table></figure><p>解释<br>title【必需】页面标题<br>date【必需】页面创建日期<br>type【必需】标签、分类和友情链接三个页面需要配置<br>updated【可选】页面更新日期<br>description【可选】页面描述<br>keywords【可选】页面关键字<br>comments【可选】显示页面评论模块 (默认 true)<br>top_img【可选】页面顶部图片<br>mathjax【可选】显示mathjax (当设置mathjax的per_page: false时，才需要配置，默认 false)<br>katex【可选】显示katex (当设置katex的per_page: false时，才需要配置，默认 false)<br>aside【可选】显示侧边栏 (默认 true)<br>aplayer【可选】在需要的页面加载aplayer的js和css,请参考文章下面的音乐 配置<br>highlight_shrink【可选】配置代码框是否展开 (true&#x2F;false) (默认为设置中highlight_shrink的配置)</p><h4 id="2、Page-Front-matter"><a href="#2、Page-Front-matter" class="headerlink" title="2、Page Front-matter"></a>2、Page Front-matter</h4><p>模板</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">---</span><br><span class="line">title:</span><br><span class="line">date:</span><br><span class="line">updated:</span><br><span class="line">tags:</span><br><span class="line">categories:</span><br><span class="line">keywords:</span><br><span class="line">description:</span><br><span class="line">top_img:</span><br><span class="line">comments:</span><br><span class="line">cover:</span><br><span class="line">toc:</span><br><span class="line">toc_number:</span><br><span class="line">toc_style_simple:</span><br><span class="line">copyright:</span><br><span class="line">copyright_author:</span><br><span class="line">copyright_author_href:</span><br><span class="line">copyright_url:</span><br><span class="line">copyright_info:</span><br><span class="line">mathjax:</span><br><span class="line">katex:</span><br><span class="line">aplayer:</span><br><span class="line">highlight_shrink:</span><br><span class="line">aside:</span><br><span class="line">abcjs:</span><br><span class="line">---</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>解释<br>title【必需】文章标题<br>date【必需】文章创建日期<br>updated【可选】文章更新日期<br>tags【可选】文章标签<br>categories【可选】文章分类<br>keywords【可选】文章关键字<br>description【可选】文章描述<br>top_img【可选】文章顶部图片<br>cover【可选】文章缩略图(如果没有设置top_img,文章页顶部将显示缩略图，可设为false&#x2F;图片地址&#x2F;留空)<br>comments【可选】显示文章评论模块(默认 true)<br>toc【可选】显示文章TOC(默认为设置中toc的enable配置)<br>toc_number【可选】显示toc_number(默认为设置中toc的number配置)<br>toc_style_simple【可选】显示 toc 简洁模式<br>copyright【可选】显示文章版权模块(默认为设置中post_copyright的enable配置)<br>copyright_author【可选】文章版权模块的文章作者<br>copyright_author_href【可选】文章版权模块的文章作者链接<br>copyright_url【可选】文章版权模块的文章连结链接<br>copyright_info【可选】文章版权模块的版权声明文字<br>mathjax【可选】显示mathjax(当设置 mathjax 的 per_page: false 时，才需要配置，默认 false )<br>katex【可选】显示 katex (当设置 katex 的 per_page: false 时，才需要配置，默认 false )<br>aplayer【可选】在需要的页面加载 aplayer 的 js 和 css,请参考文章下面的音乐 配置<br>highlight_shrink【可选】配置代码框是否展开(true&#x2F;false)(默认为设置中 highlight_shrink 的配置)<br>aside【可选】显示侧边栏 (默认 true)<br>abcjs【可选】加载 abcjs (当设置 abcjs 的 per_page: false 时，才需要配置，默认 false )</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 测试 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 测试文章 </tag>
             
         </tags>
       
