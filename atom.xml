@@ -185,11 +185,11 @@
     
     <category term="深度学习" scheme="https://macre.cn/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
+    <category term="参数对比" scheme="https://macre.cn/tags/%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94/"/>
+    
     <category term="MINIST" scheme="https://macre.cn/tags/MINIST/"/>
     
     <category term="python" scheme="https://macre.cn/tags/python/"/>
-    
-    <category term="参数对比" scheme="https://macre.cn/tags/%E5%8F%82%E6%95%B0%E5%AF%B9%E6%AF%94/"/>
     
   </entry>
   
@@ -246,6 +246,35 @@
     <category term="python" scheme="https://macre.cn/tags/python/"/>
     
     <category term="pyat" scheme="https://macre.cn/tags/pyat/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SVM-glass分类学习</title>
+    <link href="https://macre.cn/posts/dc5f4905.html"/>
+    <id>https://macre.cn/posts/dc5f4905.html</id>
+    <published>2023-10-10T18:58:19.000Z</published>
+    <updated>2025-02-20T19:01:02.839Z</updated>
+    
+    <content type="html"><![CDATA[<h1>写不动啦！以后补充</h1><p>=====<br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm1.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm2.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm3.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm4.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm5.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm7.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm9.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm10.png" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1&gt;写不动啦！以后补充&lt;/h1&gt;
+&lt;p&gt;=====&lt;br&gt;
+&lt;img src=&quot;https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm1.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;
+&lt;img src=&quot;ht</summary>
+      
+    
+    
+    
+    <category term="机器学习" scheme="https://macre.cn/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="SVM" scheme="https://macre.cn/tags/SVM/"/>
+    
+    <category term="机器学习" scheme="https://macre.cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   

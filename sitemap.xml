@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://macre.cn/posts/dc5f4905.html</loc>
+    
+    <lastmod>2025-02-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://macre.cn/posts/cbfd48ab.html</loc>
     
     <lastmod>2025-02-20</lastmod>
@@ -137,24 +146,6 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/box/nav/index.html</loc>
-    
-    <lastmod>2023-03-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://macre.cn/box/animation/index.html</loc>
-    
-    <lastmod>2023-03-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://macre.cn/tags/index.html</loc>
     
     <lastmod>2023-03-22</lastmod>
@@ -173,7 +164,7 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/life/games/index.html</loc>
+    <loc>https://macre.cn/box/animation/index.html</loc>
     
     <lastmod>2023-03-22</lastmod>
     
@@ -182,7 +173,16 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/personal/bb/index.html</loc>
+    <loc>https://macre.cn/box/nav/index.html</loc>
+    
+    <lastmod>2023-03-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://macre.cn/life/games/index.html</loc>
     
     <lastmod>2023-03-22</lastmod>
     
@@ -209,7 +209,7 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/site/census/index.html</loc>
+    <loc>https://macre.cn/personal/bb/index.html</loc>
     
     <lastmod>2023-03-22</lastmod>
     
@@ -227,7 +227,7 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/social/fcircle/index.html</loc>
+    <loc>https://macre.cn/social/link/index.html</loc>
     
     <lastmod>2023-03-22</lastmod>
     
@@ -236,7 +236,16 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/social/link/index.html</loc>
+    <loc>https://macre.cn/site/census/index.html</loc>
+    
+    <lastmod>2023-03-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://macre.cn/social/fcircle/index.html</loc>
     
     <lastmod>2023-03-22</lastmod>
     
@@ -300,27 +309,6 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/tags/MINIST/</loc>
-    <lastmod>2025-02-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://macre.cn/tags/python/</loc>
-    <lastmod>2025-02-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://macre.cn/tags/pyat/</loc>
-    <lastmod>2025-02-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://macre.cn/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -356,6 +344,20 @@
   </url>
   
   <url>
+    <loc>https://macre.cn/tags/MINIST/</loc>
+    <lastmod>2025-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://macre.cn/tags/python/</loc>
+    <lastmod>2025-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://macre.cn/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -385,6 +387,13 @@
   
   <url>
     <loc>https://macre.cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2025-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://macre.cn/tags/pyat/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -433,6 +442,20 @@
   </url>
   
   <url>
+    <loc>https://macre.cn/tags/%E8%AF%97%E6%AD%8C/</loc>
+    <lastmod>2025-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://macre.cn/tags/%E6%96%87%E8%89%BA/</loc>
+    <lastmod>2025-02-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://macre.cn/tags/esp32/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -448,20 +471,6 @@
   
   <url>
     <loc>https://macre.cn/tags/pcb/</loc>
-    <lastmod>2025-02-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://macre.cn/tags/%E8%AF%97%E6%AD%8C/</loc>
-    <lastmod>2025-02-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://macre.cn/tags/%E6%96%87%E8%89%BA/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -519,14 +528,14 @@
   </url>
   
   <url>
-    <loc>https://macre.cn/categories/%E7%A1%AC%E4%BB%B6/</loc>
+    <loc>https://macre.cn/categories/%E8%AF%97%E6%AD%8C/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://macre.cn/categories/%E8%AF%97%E6%AD%8C/</loc>
+    <loc>https://macre.cn/categories/%E7%A1%AC%E4%BB%B6/</loc>
     <lastmod>2025-02-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

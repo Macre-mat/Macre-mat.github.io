@@ -173,11 +173,11 @@
             
             <tag> 深度学习 </tag>
             
+            <tag> 参数对比 </tag>
+            
             <tag> MINIST </tag>
             
             <tag> python </tag>
-            
-            <tag> 参数对比 </tag>
             
         </tags>
       
@@ -242,6 +242,33 @@
             <tag> python </tag>
             
             <tag> pyat </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SVM-glass分类学习</title>
+      <link href="/posts/dc5f4905.html"/>
+      <url>/posts/dc5f4905.html</url>
+      
+        <content type="html"><![CDATA[<h1>写不动啦！以后补充</h1><p>=====<br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm1.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm2.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm3.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm4.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm5.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm7.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm9.png" alt=""><br><img src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/svml/svm10.png" alt=""></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 机器学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SVM </tag>
+            
+            <tag> 机器学习 </tag>
             
         </tags>
       
