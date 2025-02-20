@@ -1,0 +1,948 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><div id="myscoll"></div><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>yolov5 macre | Macre`s Blog🥝</title><meta name="keywords" content="yolo,目标识别"><meta name="author" content="Macre"><meta name="copyright" content="Macre"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="yolov5 （Macre） 目录 文章目录  yolov5 （Macre）   一、yolov5介绍   1 四种网络模型 2 yolov5 输入结构   2.1 **Mosaic数据增强** 2.2 **自适应锚框计算** 2.3 **自适应图片缩放**   3 Backbone 主干网   3.1 **Focus结构** 3.2 **CSP结构**   4 Neck 5 输出端   5.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yolov5 macre">
+<meta property="og:url" content="https://macre.cn/posts/56ab7aeb.html">
+<meta property="og:site_name" content="Macre&#96;s Blog🥝">
+<meta property="og:description" content="yolov5 （Macre） 目录 文章目录  yolov5 （Macre）   一、yolov5介绍   1 四种网络模型 2 yolov5 输入结构   2.1 **Mosaic数据增强** 2.2 **自适应锚框计算** 2.3 **自适应图片缩放**   3 Backbone 主干网   3.1 **Focus结构** 3.2 **CSP结构**   4 Neck 5 输出端   5.1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/cover/post/6.png">
+<meta property="article:published_time" content="2023-04-04T18:15:53.000Z">
+<meta property="article:modified_time" content="2025-02-20T18:17:24.094Z">
+<meta property="article:author" content="Macre">
+<meta property="article:tag" content="yolo">
+<meta property="article:tag" content="目标识别">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/cover/post/6.png"><link rel="shortcut icon" href="/"><link rel="canonical" href="https://macre.cn/posts/56ab7aeb"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/4.0.31/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.js',
+      css: 'https://cdnjs.cloudflare.com/ajax/libs/flickr-justified-gallery/2.1.2/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'yolov5 macre',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-21 02:17:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/element-ui@2.15.6/packages/theme-chalk/lib/index.css"><style id="themeColor"></style><style id="rightSide"></style><style id="transPercent"></style><style id="blurNum"></style><style id="settingStyle"></style><span id="fps"></span><style id="defineBg"></style><style id="menu_shadow"></style><link rel="stylesheet" href="//at.alicdn.com/t/c/font_4833968_lbo46bwygrp.css"><svg aria-hidden="true" style="position:absolute; overflow:hidden; width:0; height:0"><symbol id="icon-sun" viewBox="0 0 1024 1024"><path d="M960 512l-128 128v192h-192l-128 128-128-128H192v-192l-128-128 128-128V192h192l128-128 128 128h192v192z" fill="#FFD878" p-id="8420"></path><path d="M736 512a224 224 0 1 0-448 0 224 224 0 1 0 448 0z" fill="#FFE4A9" p-id="8421"></path><path d="M512 109.248L626.752 224H800v173.248L914.752 512 800 626.752V800h-173.248L512 914.752 397.248 800H224v-173.248L109.248 512 224 397.248V224h173.248L512 109.248M512 64l-128 128H192v192l-128 128 128 128v192h192l128 128 128-128h192v-192l128-128-128-128V192h-192l-128-128z" fill="#4D5152" p-id="8422"></path><path d="M512 320c105.888 0 192 86.112 192 192s-86.112 192-192 192-192-86.112-192-192 86.112-192 192-192m0-32a224 224 0 1 0 0 448 224 224 0 0 0 0-448z" fill="#4D5152" p-id="8423"></path></symbol><symbol id="icon-moon" viewBox="0 0 1024 1024"><path d="M611.370667 167.082667a445.013333 445.013333 0 0 1-38.4 161.834666 477.824 477.824 0 0 1-244.736 244.394667 445.141333 445.141333 0 0 1-161.109334 38.058667 85.077333 85.077333 0 0 0-65.066666 135.722666A462.08 462.08 0 1 0 747.093333 102.058667a85.077333 85.077333 0 0 0-135.722666 65.024z" fill="#FFB531" p-id="11345"></path><path d="M329.728 274.133333l35.157333-35.157333a21.333333 21.333333 0 1 0-30.165333-30.165333l-35.157333 35.157333-35.114667-35.157333a21.333333 21.333333 0 0 0-30.165333 30.165333l35.114666 35.157333-35.114666 35.157334a21.333333 21.333333 0 1 0 30.165333 30.165333l35.114667-35.157333 35.157333 35.157333a21.333333 21.333333 0 1 0 30.165333-30.165333z" fill="#030835" p-id="11346"></path></symbol></svg><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Macre`s Blog🥝" type="application/atom+xml">
+</head><body><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/avte/head.webp" onerror="onerror=null;src='/assets/r1.jpg'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-home"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon--article"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-guidang1">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-sekuaibiaoqian">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-fenlei">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shejiaoxinxi"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-pengyouquan">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-liuyan">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-lianjie">                   </use></svg><span class="menu_word" style="font-size:17px"> 友人帐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-wangye"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/site/census/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon--tongjibiao">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shujutongji1">                   </use></svg><span class="menu_word" style="font-size:17px"> 文章统计</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-xianxingshalou">                   </use></svg><span class="menu_word" style="font-size:17px"> 旧时光</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-maoliang"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/personal/bb/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-qunliaotian">                   </use></svg><span class="menu_word" style="font-size:17px"> 唠叨</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-love-sign">                   </use></svg><span class="menu_word" style="font-size:17px"> 恋爱小屋</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/about/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-paperplane">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Macre`s Blog🥝</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-home"></use></svg><span class="menu_word" style="font-size:17px"> 首页</span></a></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon--article"></use></svg><span class="menu_word" style="font-size:17px"> 文章</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-guidang1">                   </use></svg><span class="menu_word" style="font-size:17px"> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-sekuaibiaoqian">                   </use></svg><span class="menu_word" style="font-size:17px"> 标签</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-fenlei">                   </use></svg><span class="menu_word" style="font-size:17px"> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shejiaoxinxi"></use></svg><span class="menu_word" style="font-size:17px"> 社交</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/social/fcircle/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-pengyouquan">                   </use></svg><span class="menu_word" style="font-size:17px"> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-liuyan">                   </use></svg><span class="menu_word" style="font-size:17px"> 留言板</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/social/link/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-lianjie">                   </use></svg><span class="menu_word" style="font-size:17px"> 友人帐</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-wangye"></use></svg><span class="menu_word" style="font-size:17px"> 网站</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/site/census/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon--tongjibiao">                   </use></svg><span class="menu_word" style="font-size:17px"> 网站统计</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/echarts/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-shujutongji1">                   </use></svg><span class="menu_word" style="font-size:17px"> 文章统计</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/site/time/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-xianxingshalou">                   </use></svg><span class="menu_word" style="font-size:17px"> 旧时光</span></a></li></ul></div><div class="menus_item"><a class="site-page group faa-parent animated-hover hide" href="javascript:void(0);"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-maoliang"></use></svg><span class="menu_word" style="font-size:17px"> 个人</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/personal/bb/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-qunliaotian">                   </use></svg><span class="menu_word" style="font-size:17px"> 唠叨</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/love/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-love-sign">                   </use></svg><span class="menu_word" style="font-size:17px"> 恋爱小屋</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/personal/about/"><svg class="menu_icon faa-tada" aria-hidden="true" style="width:1.30em;height:1.30em;vertical-align:-0.15em;fill:currentColor;overflow:hidden;"><use xlink:href="#icon-paperplane">                   </use></svg><span class="menu_word" style="font-size:17px"> 关于</span></a></li></ul></div></div><center id="name-container"><a id="page-name" href="javascript:scrollToTop()">PAGE_NAME</a></center><div id="nav-right"><div id="search-button"><a class="search faa-parent animated-hover" title="检索站内任何你想要的信息"><svg class="faa-tada icon" style="height:24px;width:24px;fill:currentColor;position:relative;top:6px" aria-hidden="true"><use xlink:href="#icon-valentine_-search-love-find-heart"></use></svg><span> 搜索</span></a></div><a class="meihua faa-parent animated-hover" onclick="toggleWinbox()" title="美化设置-自定义你的风格" id="meihua-button"><svg class="faa-tada icon" style="height:26px;width:26px;fill:currentColor;position:relative;top:8px" aria-hidden="true"><use xlink:href="#icon-tupian1"></use></svg></a><a class="sun_moon faa-parent animated-hover" onclick="switchNightMode()" title="浅色和深色模式转换" id="nightmode-button"><svg class="faa-tada" style="height:25px;width:25px;fill:currentColor;position:relative;top:7px" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon">       </use></svg></a><div id="toggle-menu"><a><i class="fas fa-bars fa-fw"></i></a></div></div></div></nav><div id="post-info"><h1 class="post-title">yolov5 macre</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><svg class="meta_icon post-meta-icon" style="width:30px;height:30px;position:relative;top:10px"><use xlink:href="#icon-rili"></use></svg><span class="post-meta-label">发表于 </span><time class="post-meta-date-created" datetime="2023-04-04T18:15:53.000Z" title="发表于 2023-04-05 02:15:53">2023-04-05</time><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:18px;height:18px;position:relative;top:5px"><use xlink:href="#icon-gengxin1"></use></svg><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-20T18:17:24.094Z" title="更新于 2025-02-21 02:17:24">2025-02-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:18px;height:18px;position:relative;top:5px"><use xlink:href="#icon-biaoqian"></use></svg><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><svg class="meta_icon post-meta-icon" style="width:25px;height:25px;position:relative;top:8px"><use xlink:href="#icon-charuword"></use></svg><span class="post-meta-label">字数总计:</span><span class="word-count">6944</span><span class="post-meta-separator">|</span><svg class="meta_icon post-meta-icon" style="width:20px;height:20px;position:relative;top:5px"><use xlink:href="#icon-shizhong"></use></svg><span class="post-meta-label">阅读时长:</span><span>24分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="yolov5 macre"><svg class="meta_icon post-meta-icon" style="width:25px;height:25px;position:relative;top:5px"><use xlink:href="#icon-eye"></use></svg><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="yolov5-（Macre）">yolov5 （Macre）</h2>
+<p>目录</p>
+<h4 id="文章目录">文章目录</h4>
+<ul>
+<li><a href="#yolov5_Macre_0">yolov5 （Macre）</a></li>
+<li>
+<ul>
+<li><a href="#yolov5_29">一、yolov5介绍</a></li>
+<li>
+<ul>
+<li><a href="#1__31">1 四种网络模型</a></li>
+<li><a href="#2_yolov5__35">2 yolov5 输入结构</a></li>
+<li>
+<ul>
+<li><a href="#21_Mosaic_49">2.1 **Mosaic数据增强**</a></li>
+<li><a href="#22__63">2.2 **自适应锚框计算**</a></li>
+<li><a href="#23__83">2.3 **自适应图片缩放**</a></li>
+</ul>
+</li>
+<li><a href="#3__Backbone__87">3 Backbone 主干网</a></li>
+<li>
+<ul>
+<li><a href="#31_Focus_89">3.1 **Focus结构**</a></li>
+<li><a href="#32_CSP_102">3.2 **CSP结构**</a></li>
+</ul>
+</li>
+<li><a href="#4_Neck_106">4 Neck</a></li>
+<li><a href="#5__112">5 输出端</a></li>
+<li>
+<ul>
+<li><a href="#51_Bounding_box_114">5.1 **Bounding box损失函数**</a></li>
+<li><a href="#52_nms_116">5.2 **nms非极大值抑制**</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_124">二、环境搭建</a></li>
+<li>
+<ul>
+<li><a href="#1anaconda_136">1、anaconda</a></li>
+<li>
+<ul>
+<li><a href="#11__138">1.1 下载</a></li>
+<li><a href="#12__154">1.2 安装</a></li>
+<li><a href="#13_Anaconda_Navigator__244">1.3 Anaconda Navigator 尝试</a></li>
+</ul>
+</li>
+<li><a href="#2Anaconda_Promp_272">2、利用Anaconda Promp创建新环境</a></li>
+<li>
+<ul>
+<li><a href="#21__296">2.1 创建新的环境</a></li>
+<li><a href="#22__328">2.2 激活新的环境</a></li>
+</ul>
+</li>
+<li><a href="#3yolov5__343">3、yolov5 框架部署</a></li>
+<li>
+<ul>
+<li><a href="#31_gitgub_347">3.1 克隆gitgub上的项目</a></li>
+<li><a href="#32__369">3.2 文件结构说明</a></li>
+<li><a href="#33__399">3.3 检测配置是否成功</a></li>
+</ul>
+</li>
+<li><a href="#4_yolopytorch_gpu_466">4 为yolo环境配置pytorch gpu版本</a></li>
+<li><a href="#5_gpuCUDA_554">5 配置gpu的CUDA</a></li>
+<li>
+<ul>
+<li><a href="#51__574">5.1 查看正确的版本</a></li>
+<li><a href="#52__591">5.2 下载和安装</a></li>
+<li><a href="#_625">测试环境是否安装成功</a></li>
+<li><a href="#cuDNN_638">cuDNN配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_677">三、制作数据集</a></li>
+<li>
+<ul>
+<li><a href="#31_679">3.1获取视频和视频转图片</a></li>
+<li><a href="#32_labelimgyolotxt_681">3.2 使用labelimg来制作yolotxt数据</a></li>
+<li>
+<ul>
+<li><a href="#321_labelimg__683">3.2.1 labelimg 介绍</a></li>
+<li><a href="#322__693">3.2.2 下载</a></li>
+<li><a href="#323__703">3.2.3 标注</a></li>
+<li><a href="#324_yolotxt_817">3.2.4 yolo产生的txt数据</a></li>
+<li><a href="#325_vocxml_823">3.2.5 voc数据产生的xml</a></li>
+<li><a href="#326__829">3.2.6 数据之间的转换</a></li>
+<li><a href="#327__837">3.2.7 数据集文件夹结构</a></li>
+<li><a href="#328__862">3.2.8 训练集和测试集制作</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_936">四、配置模型</a></li>
+<li>
+<ul>
+<li><a href="#41__938">4.1 修改数据配置文件</a></li>
+</ul>
+</li>
+<li><a href="#__981">五、开始训练 模型的使用</a></li>
+<li><a href="#__1058">六 、检测效果</a></li>
+<li>
+<ul>
+<li><a href="#61__1060">6.1 训练可视化</a></li>
+<li><a href="#62__1080">6.2 检测效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>**笔记思路和结构 **</p>
+<ul>
+<li>
+<p>以项目部署的思路来写的</p>
+<blockquote>
+<p>一、配置anaconda</p>
+<p>二、环境配置</p>
+<p>三、制作数据集合</p>
+</blockquote>
+</li>
+</ul>
+<p>效果展示</p>
+<p>yolov5 原神测试</p>
+<h3 id="一、yolov5介绍">一、yolov5介绍</h3>
+<h4 id="1-四种网络模型">1 四种网络模型</h4>
+<p>Yolov5官方代码中，给出的目标检测网络中一共有4个版本，按大小来分，分别是Yolov5s、Yolov5m、Yolov5l、Yolov5x四个模型。只需要记住越大的效果越好，但是花费的时间就越多。</p>
+<h4 id="2-yolov5-输入结构">2 yolov5 输入结构</h4>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_fd22f6e5.png" alt="pic_fd22f6e5.png"></p>
+<p>Yolov5的网络结构图，可以看出，还是分为输入端、Backbone、Neck、Prediction四个部分。</p>
+<p>**（1）输入端：**Mosaic数据增强、自适应锚框计算、自适应图片缩放<br>
+**（2）Backbone：**Focus结构，CSP结构<br>
+**（3）Neck：**FPN+PAN结构<br>
+**（4）Prediction：**GIOU_Loss</p>
+<h5 id="2-1-Mosaic数据增强">2.1 Mosaic数据增强</h5>
+<p>为什么要进行Mosaic数据增强？<br>
+在平时项目训练时，小目标的AP一般比中目标和大目标低很多。而Coco数据集中也包含大量的小目标，但比较麻烦的是小目标的分布并不均匀。</p>
+<p>主要有几个优点：</p>
+<ol>
+<li>丰富数据集：随机使用4张图片，随机缩放，再随机分布进行拼接，大大丰富了检测数据集，特别是随机缩放增加了很多小目标，让网络的鲁棒性更好。</li>
+<li>**减少GPU：**可能会有人说，随机缩放，普通的数据增强也可以做，但作者考虑到很多人可能只有一个GPU，因此Mosaic增强训练时，可以直接计算4张图片的数据，使得Mini-batch大小并不需要很大，一个GPU就可以达到比较好的效果。</li>
+</ol>
+<p>此外，发现另一研究者的训练方式也值得借鉴，采用的数据增强和Mosaic比较类似，也是使用4张图片（不是随机分布），但训练计算loss时，采用“缺啥补啥”的思路：</p>
+<p>如果上一个iteration中，小物体产生的loss不足（比如小于某一个阈值），则下一个iteration就用拼接图；否则就用正常图片训练，也很有意思。</p>
+<h5 id="2-2-自适应锚框计算">2.2 自适应锚框计算</h5>
+<p>在Yolo算法中，针对不同的数据集，都会有初始设定长宽的锚框。</p>
+<p>在网络训练中，网络在初始锚框的基础上输出预测框，进而和真实框groundtruth进行比对，计算两者差距，再反向更新，迭代网络参数。</p>
+<p>因此初始锚框也是比较重要的一部分。</p>
+<p>在Yolov3、Yolov4中，训练不同的数据集时，计算初始锚框的值是通过单独的程序运行的。</p>
+<p>但Yolov5中将此功能嵌入到代码中，每次训练时，自适应的计算不同训练集中的最佳锚框值。</p>
+<p>当然，如果觉得计算的锚框效果不是很好，也可以在代码中将自动计算锚框功能关闭。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parser.add arqument(<span class="string">&#x27;--noautu=oanchor&#x27;</span>,aaction=<span class="string">&#x27;store ture&#x27;</span>,<span class="built_in">help</span> = <span class="string">&#x27;disable autoanchor check&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>控制的代码即train.py中上面一行代码，设置成False，每次训练时，不会自动计算。</p>
+<h5 id="2-3-自适应图片缩放">2.3 自适应图片缩放</h5>
+<p>在常用的目标检测算法中，不同的图片长宽都不相同，因此常用的方式是将原始图片统一缩放到一个标准尺寸，再送入检测网络中。</p>
+<h4 id="3-Backbone-主干网">3 Backbone 主干网</h4>
+<h5 id="3-1-Focus结构">3.1 Focus结构</h5>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_700d6a1e.png" alt="pic_700d6a1e.png"></p>
+<p>Focus结构，在Yolov3&amp;Yolov4中并没有这个结构，其中比较关键是切片操作。</p>
+<p>比如右图的切片示意图，443的图像切片后变成2212的特征图。</p>
+<p>以Yolov5s的结构为例，原始6086083的图像输入Focus结构，采用切片操作，先变成30430412的特征图，再经过一次32个卷积核的卷积操作，最终变成30430432的特征图。</p>
+<p>需要注意的是：Yolov5s的Focus结构最后使用了32个卷积核，而其他三种结构，使用的数量有所增加，先注意下，后面会讲解到四种结构的不同点。</p>
+<h5 id="3-2-CSP结构">3.2 CSP结构</h5>
+<p>而Yolov5中设计了两种CSP结构，以Yolov5s网络为例，CSP1_X结构应用于Backbone主干网络，另一种CSP2_X结构则应用于Neck中。</p>
+<h4 id="4-Neck">4 Neck</h4>
+<p>Yolov5现在的Neck和Yolov4中一样，都采用FPN+PAN的结构，但在Yolov5刚出来时，只使用了FPN结构，后面才增加了PAN结构，此外网络中其他部分也进行了调整。</p>
+<p>Yolov5的Neck结构中，采用借鉴CSPnet设计的CSP2结构，加强网络特征融合的能力。</p>
+<h4 id="5-输出端">5 输出端</h4>
+<h5 id="5-1-Bounding-box损失函数">5.1 Bounding box损失函数</h5>
+<h5 id="5-2-nms非极大值抑制">5.2 nms非极大值抑制</h5>
+<h3 id="二、环境搭建">二、环境搭建</h3>
+<p>技术流程是</p>
+<p>1、使用anaconda配置一个yolov5的专属环境，</p>
+<p>2、在环境里基于pytroch利用yolov5框架进行目标检测。</p>
+<p>3、数据利用python脚本把视频分割为图片，图片利用labelimg来制作yolov5所需要的txt文件。</p>
+<h4 id="1、anaconda">1、anaconda</h4>
+<h5 id="1-1-下载">1.1 下载</h5>
+<p>链接：<a target="_blank" rel="noopener" href="https://www.anaconda.com/products/individual">Anaconda | Individual Edition</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.anaconda.com/products/individual">https://www.anaconda.com/products/individual</a></p>
+<p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">Index of /anaconda/archive/ | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror</a></p>
+<p><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a></p>
+<p>选择最新的就行</p>
+<h5 id="1-2-安装">1.2 安装</h5>
+<p>我的卸载了，再走一遍，应该不会有什么问题。安装包我会放在群里。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_562e2b84.png" alt="pic_562e2b84.png"></p>
+<p>点击next</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_d27f0876.png" alt="pic_d27f0876.png"></p>
+<p>i agree</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_a5b1e1ea.png" alt="pic_a5b1e1ea.png"></p>
+<p>只有我使用</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_fb6e01bf.png" alt="pic_fb6e01bf.png"></p>
+<p>选择合适的路径</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_9b846087.png" alt="pic_9b846087.png"></p>
+<p>第一个选项：</p>
+<blockquote>
+<p>选择是否将 Anaconda 添加到 PATH 环境变量中，默认是不添加的。不添加意味着你不能在cmd(命令提示符)以及powershell中使用命令行操作。我不建议你添加，是因为anaconda有自带的 Anaconda Prompt 以及 Anaconda Powershell Prompt，这与cmd和powershell是一样的，没有必要添加到路径。当然如果你有其他想法，你可以选择添加。</p>
+</blockquote>
+<p>第二个选项：</p>
+<blockquote>
+<p>选择是否将 Anaconda 注册为你的默认 Python，默认是选择的。（我这个默认为python为3.8的）如果你要安装和运行 Anaconda 的多个版本或 Python 的多个版本，基本上是不勾选此选项的 。如果你有其它想法，另说。如果你之前安装过python并且使用vs、pycharm等软件时，勾选此选项，anaconda自带的python会成为这些软件的默认选项。</p>
+<p>如果没有配置过之前的python那就勾选第二个</p>
+</blockquote>
+<p>安装即可</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_39e54782.png" alt="pic_39e54782.png"></p>
+<p>等待安装成功后，再菜单里找到最近添加，右键打开文件位置。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_b4475c4b.png" alt="pic_b4475c4b.png"></p>
+<p>发送桌面快捷方式，打开后有几个文件：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_eb258a90.png" alt="pic_eb258a90.png"></p>
+<p>Anaconda Navigator：</p>
+<blockquote>
+<p>Anaconda Navigator的官方介绍：Anaconda Navigator是Anaconda发行版中包含的桌面图形用户界面（GUI），可让您启动应用程序并轻松管理conda程序包，环境和通道，而无需使用命令行命令。</p>
+</blockquote>
+<p>Anaconda Powershell Prompt 以及 Anaconda Prompt：</p>
+<blockquote>
+<p>与上面一致，但是是使用命令行模式</p>
+</blockquote>
+<p>Jupyter Notebook：这个使用的人非常多</p>
+<blockquote>
+<p>Jupyter Notebook是基于网页的用于交互计算的应用程序。其可被应用于全过程计算：开发、文档编写、运行代码和展示结果。简而言之，Jupyter Notebook是以网页的形式打开，可以在网页页面中直接编写代码和运行代码，代码的运行结果也会直接在代码块下显示。如在编程过程中需要编写说明文档，可在同一个页面中直接编写，便于作及时的说明和解释。</p>
+</blockquote>
+<p>Spyder：</p>
+<blockquote>
+<p>百度百科：Spyder是Python的作者为它开发的一个简单的集成开发环境。和其他的Python开发环境相比，它最大的优点就是模仿MATLAB的“工作空间”的功能，可以很方便地观察和修改数组的值。</p>
+</blockquote>
+<p>验证安装是否成功。</p>
+<p>打开Anaconda Promp，输入 conda info</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_0c854db6.png" alt="pic_0c854db6.png"></p>
+<p>成功</p>
+<h5 id="1-3-Anaconda-Navigator-尝试">1.3 Anaconda Navigator 尝试</h5>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_3a94eb88.png" alt="pic_3a94eb88.png"></p>
+<p>打开后是这样。重要的是environments和applications on 。</p>
+<p>environments：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_32d4eaf8.png" alt="pic_32d4eaf8.png"></p>
+<p>是一个你的环境，左边是你的环境名称，右边是你的环境里的包名称。目的是针对你的不同应用场景来管理不同的包，是你的开发环境更便捷不被你的混乱的包搞混乱。和pycharm的venv是一样的。例如你的web工程为一个环境，人工智能为一个环境，数据可视化一个环境。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_43ded5bd.png" alt="pic_43ded5bd.png"></p>
+<p>create是创建新的环境。</p>
+<h4 id="2、利用Anaconda-Promp创建新环境">2、利用Anaconda Promp创建新环境</h4>
+<blockquote>
+<p>通常一个环境就足够了，但是我还是建议再创建一个新的环境。<br>
+在有些情况下，你可以在新环境上做实验，没问题后再在默认环境中操作，新环境中遭遇不可控错误，那就删除重建一个。或者你要搭建 tesorflow 、pytorch深度学习环境，那你肯定要新建环境的。</p>
+</blockquote>
+<p>图形化创建环境：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_38d2914b.png" alt="pic_38d2914b.png"></p>
+<p>默认的环境是base（root）</p>
+<p>检查是否安装成功：<code>conda --version</code></p>
+<p>检查目前的安装环境：<code>conda info --envs</code> 或者 <code>conda info -e</code></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_0c93ba74.png" alt="pic_0c93ba74.png"></p>
+<h5 id="2-1-创建新的环境">2.1 创建新的环境</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create --name object_detaction tensorflow python=<span class="number">3.9</span> 中途需要输入 y 表示同意继续</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>–name 或者 -n ：指定环境名</p>
+<p>tensorflow：环境名python=3.9：指定安装python的版本，python=3.9表示安装3.9中的最新版也可以指定具体的版本 比如：python=3.9.4</p>
+</blockquote>
+<p>旧的解析器创建</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_5a882a78.png" alt="pic_5a882a78.png"></p>
+<p>新的环境创建成功</p>
+<p>推荐使用：</p>
+<p>新的解析器创建</p>
+<p>使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n &lt;环境名&gt; tensorflow python=<span class="number">3.9</span> -y</span><br></pre></td></tr></table></figure>
+<p>命令来创建。</p>
+<h5 id="2-2-激活新的环境">2.2 激活新的环境</h5>
+<p>conda activate 环境名来激活环境</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_c838b9d7.png" alt="pic_c838b9d7.png"></p>
+<p>激活成功</p>
+<blockquote>
+<p>这个环境就是来做开放环境目标检测的了。这是使用yolo框架的，其实你也可以之间用pytorch或者tf来命名，来确定使用的基础是pytorch还是tf。</p>
+</blockquote>
+<h4 id="3、yolov5-框架部署">3、yolov5 框架部署</h4>
+<p>看此文章之前先看四配置pytorch。</p>
+<h5 id="3-1-克隆gitgub上的项目">3.1 克隆gitgub上的项目</h5>
+<p><a href="#yolov5_29">YOLOv5</a>的代码是开源的，因此我们可以从github上克隆其源码。不得不说GitHub的确是全球最大的男性交友网站，里面的人个个都是人才，yolov5发布才一年左右的时间，YOLOv5就已经更新了5个分支了，分别是yolov5.1-yolov5.5分支。</p>
+<p>首先打开yolov5的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=github&amp;spm=1001.2101.3001.7020">github</a>的<a target="_blank" rel="noopener" href="https://github.com/ultralytics/yolov5/tree/v5.0">官网</a> <a target="_blank" rel="noopener" href="https://github.com/ultralytics/yolov5/tree/v5.0%EF%BC%88%E8%BF%99%E4%B8%AA%E7%BD%91%E7%AB%99%E5%9C%A8%E5%9B%BD%E5%A4%96%E6%89%93%E5%BC%80%E6%98%AF%E5%BE%88%E6%85%A2%E7%9A%84%EF%BC%8C%E8%80%8C%E4%B8%94%E6%98%AF%E6%9C%89%E7%9A%84%E6%97%B6%E5%80%99%E8%83%BD%E6%AD%A3%E5%B8%B8%E6%89%93%E5%BC%80%EF%BC%8C%E6%9C%89%E7%9A%84%E6%97%B6%E5%80%99%E6%98%AF%E8%BF%9B%E4%B8%8D%E5%8E%BB%E7%9A%84%EF%BC%8C%E4%BD%86%E6%98%AF%E5%A4%A7%E5%AE%B6%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%89%93%E4%B8%8D%E5%BC%80%E7%9A%84%E8%AF%9D%EF%BC%8C%E4%B8%80%E5%AE%9A%E8%A6%81%E5%A4%9A%E6%89%93%E5%BC%80%E5%87%A0%E6%AC%A1%E3%80%82%EF%BC%89%E6%89%93%E5%BC%80%E7%9A%84%E5%AE%98%E7%BD%91%E7%95%8C%E9%9D%A2%E5%A6%82%E4%B8%8B%EF%BC%8C%E8%BF%99%E4%B8%AA%E5%B0%B1%E6%98%AF%E5%A4%A7%E7%A5%9Eglenn-jocher%E5%BC%80%E6%BA%90%E7%9A%84yolov5%E7%9A%84%E9%A1%B9%E7%9B%AE%E3%80%82">https://github.com/ultralytics/yolov5/tree/v5.0（这个网站在国外打开是很慢的，而且是有的时候能正常打开，有的时候是进不去的，但是大家第一次打不开的话，一定要多打开几次。）打开的官网界面如下，这个就是大神glenn-jocher开源的yolov5的项目。</a></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_f899139a.png" alt="pic_f899139a.png"></p>
+<p>使用git来部署，或者下载zip都是可以的。我使用的是git来部署。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_7d95ee06.png" alt="pic_7d95ee06.png"></p>
+<p>部署成功</p>
+<h5 id="3-2-文件结构说明">3.2 文件结构说明</h5>
+<p>现在来对代码的整体目录做一个介绍：</p>
+<p>├── data：主要是存放一些超参数的配置文件（这些文件（yaml文件）是用来配置训练集和测试集还有验证集的路径的，其中还包括目标检测的种类数和种类的名称）；还有一些官方提供测试的图片。如果是训练自己的数据集的话，那么就需要修改其中的yaml文件。但是自己的数据集不建议放在这个路径下面，而是建议把数据集放到yolov5项目的同级目录下面。</p>
+<p>├── models：里面主要是一些网络构建的配置文件和函数，其中包含了该项目的四个不同的版本，分别为是s、m、l、x。从名字就可以看出，这几个版本的大小。他们的检测测度分别都是从快到慢，但是精确度分别是从低到高。这就是所谓的鱼和熊掌不可兼得。如果训练自己的数据集的话，就需要修改这里面相对应的yaml文件来训练自己模型。</p>
+<p>├── utils：存放的是工具类的函数，里面有loss函数，metrics函数，plots函数等等。</p>
+<p>├── <a target="_blank" rel="noopener" href="http://detect.py">detect.py</a>：利用训练好的权重参数进行目标检测，可以进行图像、视频和摄像头的检测。</p>
+<p>├── <a target="_blank" rel="noopener" href="http://train.py">train.py</a>：训练自己的数据集的函数。</p>
+<p>├── <a target="_blank" rel="noopener" href="http://test.py">test.py</a>：测试训练的结果的函数。</p>
+<p>├──requirements.txt：这是一个文本文件，里面写着使用yolov5项目的环境依赖包的一些版本，可以利用该文本导入相应版本的包。</p>
+<p>以上就是yolov5项目代码的整体介绍。我们训练和测试自己的数据集基本就是利用到如上的代码。</p>
+<h5 id="3-3-检测配置是否成功">3.3 检测配置是否成功</h5>
+<p>首先切换到yolo5的位置</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_4b21cea1.png" alt="pic_4b21cea1.png"></p>
+<p>(1)配置requirements.txt里的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i &lt;源地址&gt;</span><br></pre></td></tr></table></figure>
+<p>清华：<a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<p>阿里云：<a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/pypi/simple/">http://mirrors.aliyun.com/pypi/simple/</a></p>
+<p>中国科技大学 <a target="_blank" rel="noopener" href="https://pypi.mirrors.ustc.edu.cn/simple/">https://pypi.mirrors.ustc.edu.cn/simple/</a></p>
+<p>华中理工大学：<a target="_blank" rel="noopener" href="http://pypi.hustunique.com/">http://pypi.hustunique.com/</a></p>
+<p>山东理工大学：<a target="_blank" rel="noopener" href="http://pypi.sdutlinux.org/">http://pypi.sdutlinux.org/</a></p>
+<p>豆瓣：<a target="_blank" rel="noopener" href="http://pypi.douban.com/simple/">http://pypi.douban.com/simple/</a></p>
+<p>常见的源地址，避免下载包出问题。</p>
+<p>下载完yolov5后，什么都不用改，<a target="_blank" rel="noopener" href="http://xn--detect-2w2r549b.py">运行detect.py</a></p>
+<p>这个是帮你检测能不能正常运行的</p>
+<p>(2)检测是否成功</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python detect.py</span><br></pre></td></tr></table></figure>
+<p>运行一下试试</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_edf04e44.png" alt="pic_edf04e44.png"></p>
+<p>在runs里的detect文件里找到exp如果有下面的图片就是成功：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_4e87edf4.png" alt="pic_4e87edf4.png"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_d7b4ac78.png" alt="pic_d7b4ac78.png"></p>
+<h4 id="4-为yolo环境配置pytorch-gpu版本">4 为yolo环境配置pytorch gpu版本</h4>
+<p>cpu太慢了，因为不是gpu版本是不可以使用gpu来就行训练的。</p>
+<p>打开pytorch的<a target="_blank" rel="noopener" href="https://pytorch.org/">官网</a>， <a target="_blank" rel="noopener" href="https://pytorch.org/">https://pytorch.org/</a></p>
+<p>根据你的版本选择合适的下载：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_a57d36cd.png" alt="pic_a57d36cd.png"></p>
+<p>使用conda来配置在环境里：</p>
+<p>执行run this commond这个命令</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_51f69425.png" alt="pic_51f69425.png"></p>
+<p>出现后要输入Y。</p>
+<p>如果下载太慢了，可以换源：</p>
+<p>使用清华镜像源网站<br>
+切换到国内的镜像源（为什么要切换原因就不用多说了吧（手动狗头））<br>
+分别输入以下4行代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span><br><span class="line">conda config --<span class="built_in">set</span> show_channel_urls yes</span><br><span class="line">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorc</span><br></pre></td></tr></table></figure>
+<p>注意！如果切换镜像后当出现下载不了的情况，就先切换默认源，然后再修改另一个可以使用的conda源（一定要先恢复默认，再换另一个！！！）<br>
+切回默认源：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda config --remove-key channels</span><br></pre></td></tr></table></figure>
+<p>如果是cpu版本：</p>
+<p>进入python查看当前pytorch是否可用<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=gpu&amp;spm=1001.2101.3001.7020">gpu</a>，发现是false</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>import torch<br>
+torch.cuda.is_available()<br>
+False</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>如果在环境里输入python回车后是这个，说明不能使用gpu来运行。</p>
+<p>查看torch版本，发现是cpu，可能是安装的时候没有留意</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>torch.version<br>
+‘1.10.2+cpu’</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>conda remove --name Python3.9.4 --all</p>
+<p>各种检测命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="built_in">print</span>(torch.__version__)</span><br><span class="line"><span class="built_in">print</span>(torch.cuda.is_available())<span class="comment">#cuda是否可用</span></span><br><span class="line">torch.cuda.device_count()<span class="comment">#返回GPU的数量</span></span><br><span class="line">torch.cuda.get_device_name(<span class="number">0</span>)<span class="comment">#返回gpu名字，设备索引默认从0开始</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-配置gpu的CUDA">5 配置gpu的CUDA</h4>
+<p>我参考了网上许多教程，结合自己的实际情况写的笔记。</p>
+<p>安装CUDA需要下载两个安装包</p>
+<p>windows10 版本安装 CUDA ，首先需要下载两个安装包</p>
+<ul>
+<li>CUDA toolkit（toolkit就是指工具包）</li>
+<li>cuDNN</li>
+</ul>
+<p>注：cuDNN 是用于配置深度学习使用</p>
+<p>官方教程<br>
+CUDA：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html">https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html</a></p>
+<p>cuDNN：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installwindows">https://docs.nvidia.com/deeplearning/sdk/cudnn-install/index.html#installwindows</a></p>
+<h5 id="5-1-查看正确的版本">5.1 查看正确的版本</h5>
+<p>打开显卡驱动的系统信息界面：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_59d439c0.png" alt="pic_59d439c0.png"></p>
+<p>查看版本得知是512.36</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_819ec51a.png" alt="pic_819ec51a.png"></p>
+<p>支持的是11.6</p>
+<p>cuda toolkit与driver对应表：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html">https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html</a></p>
+<h5 id="5-2-下载和安装">5.2 下载和安装</h5>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_1696188c.png" alt="pic_1696188c.png"></p>
+<p>选择正确的版本和选择exe local 来安装。</p>
+<p>选择自定义安装。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_6bf66e45.png" alt="pic_6bf66e45.png"></p>
+<p>不要选Visual Studio Integration，即使选了也不能成功安装</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_8422cd08.png" alt="pic_8422cd08.png"></p>
+<p>一直安装下去就行</p>
+<p>完成后需要就行查看系统变量中是否添加了路径，如果没有需要自己添加</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_dce61931.png" alt="pic_dce61931.png"></p>
+<h5 id="测试环境是否安装成功">测试环境是否安装成功</h5>
+<p>运行cmd，输入nvcc --version 即可查看版本号；<br>
+set cuda，可以查看 CUDA 设置的环境变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nvcc --version</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> cuda</span><br></pre></td></tr></table></figure>
+<h5 id="cuDNN配置">cuDNN配置</h5>
+<p>cuDNN地址如下，不过要注意的是，我们需要注册一个账号，才可以进入到下载界面。大家可以放心注册的。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a></p>
+<p>cuDNN叫配置更为准确，我们先把下载的 cuDNN 解压缩，会得到下面的文件：</p>
+<p>cuDNN 解压缩后的文件</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_b250913a.png" alt="pic_b250913a.png"></p>
+<p>下载后发现其实cudnn不是一个exe文件，而是一个压缩包，解压后，有三个文件夹，把三个文件夹拷贝到cuda的安装目录下。</p>
+<p>拷贝时看到，CUDA 的安装目录中，有和 cuDNN 解压缩后的同名文件夹，这里注意，不需要担心，直接复制即可。cuDNN 解压缩后的同名文件夹中的配置文件会添加到 CUDA安装目录中的同名文件夹中。</p>
+<p>现在大家应该可以理解，cuDNN 其实就是 CUDA 的一个补丁而已，专为深度学习运算进行优化的。然后再参加环境变量</p>
+<p>往系统环境变量中的 path 添加如下路径（根据自己的路径进行修改）</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\lib</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\libnvvp</p>
+<p>到此环境搭建成功！！！！</p>
+<h3 id="三、制作数据集">三、制作数据集</h3>
+<h4 id="3-1获取视频和视频转图片">3.1获取视频和视频转图片</h4>
+<h4 id="3-2-使用labelimg来制作yolotxt数据">3.2 使用labelimg来制作yolotxt数据</h4>
+<h5 id="3-2-1-labelimg-介绍">3.2.1 labelimg 介绍</h5>
+<p>Labelimg是一款开源的数据标注工具，可以标注三种格式。</p>
+<p>1 VOC标签格式，保存为<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=xml&amp;spm=1001.2101.3001.7020">xml</a>文件。</p>
+<p>2 yolo标签格式，保存为txt文件。</p>
+<p>3 createML标签格式，保存为json格式。</p>
+<h5 id="3-2-2-下载">3.2.2 下载</h5>
+<p>在conda的命令窗口下运行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install labelimg -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<p>运行如上命令后，系统就会自动下载labelimg相关的依赖。由于这是一个很轻量的工具，所以下载起来很快，当出现如下红色框框中的告诉我们成功安装的时候，说明labelimg安装成功了。</p>
+<h5 id="3-2-3-标注">3.2.3 标注</h5>
+<p>（1）打开labelimg</p>
+<p>在打开labelimg之前要使用文件的配置，如下</p>
+<p>资料数据目录结构：</p>
+<blockquote>
+<p>&lt;数据名字&gt;</p>
+<ul>
+<li>label --&gt; 标签文件夹</li>
+<li>images --&gt; 图片文件夹</li>
+<li>predefined_classes.txt --&gt; 初始化labelimg的分类文件</li>
+</ul>
+</blockquote>
+<p>（1）label文件是保存标签的数据</p>
+<p>（2）images文件是用来保存图片的数据。</p>
+<blockquote>
+<p>images 数据来源可以自己搜集。</p>
+<p>可以使用下面的python脚本把视频改为png</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 视频转图片的脚本</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment">#此删除文件夹内容的函数来源于网上</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">del_file</span>(<span class="params">filepath</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    删除某一目录下的所有文件或文件夹</span></span><br><span class="line"><span class="string">    :param filepath: 路径</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    del_list = os.listdir(filepath)</span><br><span class="line">    <span class="keyword">for</span> f <span class="keyword">in</span> del_list:</span><br><span class="line">        file_path = os.path.join(filepath, f)</span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(file_path):</span><br><span class="line">            os.remove(file_path)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">video_to_images</span>(<span class="params">fps,path</span>):</span><br><span class="line">  cv = cv2.VideoCapture(path)</span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">not</span> cv.isOpened()):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n打开视频失败！请检查视频路径是否正确\n&quot;</span>)</span><br><span class="line">    exit(<span class="number">0</span>)</span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&quot;images/&quot;</span>):</span><br><span class="line">    os.mkdir(<span class="string">&quot;images/&quot;</span>) <span class="comment"># 创建文件夹</span></span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    del_file(<span class="string">&#x27;images/&#x27;</span>) <span class="comment"># 清空文件夹</span></span><br><span class="line">  order = <span class="number">0</span>   <span class="comment">#序号</span></span><br><span class="line">  h = <span class="number">0</span></span><br><span class="line">  <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    h=h+<span class="number">1</span></span><br><span class="line">    rval, frame = cv.read()</span><br><span class="line">    <span class="keyword">if</span> h == fps:</span><br><span class="line">      h = <span class="number">0</span></span><br><span class="line">      order = order + <span class="number">1</span></span><br><span class="line">      <span class="keyword">if</span> rval:</span><br><span class="line">        cv2.imwrite(<span class="string">&#x27;./images/&#x27;</span> + <span class="built_in">str</span>(order) + <span class="string">&#x27;.jpg&#x27;</span>, frame) <span class="comment">#图片保存位置以及命名方式</span></span><br><span class="line">        cv2.waitKey(<span class="number">1</span>)</span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">  cv.release()</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;\nsave success!\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数设置</span></span><br><span class="line">fps = <span class="number">12</span>   <span class="comment"># 隔多少帧取一张图  1表示全部取</span></span><br><span class="line">path=<span class="string">&quot;F:\\obsluzhi\\cs1.mp4&quot;</span> <span class="comment"># 视频路径 比如 D:\\images\\tram_result.mp4 或者 D:/images/tram_result.mp4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">  video_to_images(fps,path)</span><br><span class="line">  <span class="comment"># 会在代码的当前文件夹下 生成images文件夹 用于保存图片</span></span><br><span class="line">  <span class="comment"># 如果有images文件夹，会清空文件夹！</span></span><br></pre></td></tr></table></figure>
+<p>（3）predefined_classes.txt</p>
+<p>内容是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">person</span><br><span class="line">hutao</span><br><span class="line">humo</span><br><span class="line">hua</span><br><span class="line">ludeng</span><br><span class="line">shu</span><br><span class="line">caocong</span><br><span class="line">pugongying</span><br><span class="line">maodian</span><br><span class="line">...类别</span><br></pre></td></tr></table></figure>
+<p>（2）界面认识</p>
+<p>到数据集的目录下执行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">labelimg images predefined_classes.txt</span><br></pre></td></tr></table></figure>
+<p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-oNZfbkSl-1671794265512)(C:\Users\20998\AppData\Roaming\Typora\typora-user-images\1663854191888.png)]<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_1feb8da1.png" alt="pic_1feb8da1.png"></p>
+<p>上图是界面，open是打开，opendir是打开文件夹，他会把文件夹的所有图片导入，如何按下快捷键D可以快速浏览下一个图片。yolo 是导出的是txt文件，还可以导出voc 的xml文件。create rectbox可以创建窗口。</p>
+<p>（3）标签一次演示</p>
+<h5 id="3-2-4-yolo产生的txt数据">3.2.4 yolo产生的txt数据</h5>
+<p>（1）格式解释</p>
+<p>（2）用处</p>
+<h5 id="3-2-5-voc数据产生的xml">3.2.5 voc数据产生的xml</h5>
+<p>（1）格式解释</p>
+<p>（2）用处</p>
+<h5 id="3-2-6-数据之间的转换">3.2.6 数据之间的转换</h5>
+<p>（1）xml转txt</p>
+<p>（2）json 转txt</p>
+<h5 id="3-2-7-数据集文件夹结构">3.2.7 数据集文件夹结构</h5>
+<p>（1）标准的数据文件格式：</p>
+<p>这里暂时不用，之后会对标准的数据格式进行一个解析。</p>
+<p>（2）看懂项目的文件结构后，也可以随意的保存数据文件</p>
+<p>推荐使用</p>
+<blockquote>
+<p>yolov5</p>
+<blockquote>
+<p>&lt;数据集名字&gt;</p>
+<blockquote>
+<ul>
+<li>label --&gt; 标签文件夹</li>
+<li>images --&gt; 图片文件夹</li>
+<li>predefined_classes.txt --&gt; 初始化labelimg的分类文件</li>
+<li>imagesets</li>
+</ul>
+<blockquote>
+<ul>
+<li>main</li>
+</ul>
+<blockquote>
+<ul>
+<li>训练集和测试集合</li>
+</ul>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h5 id="3-2-8-训练集和测试集制作">3.2.8 训练集和测试集制作</h5>
+<p>训练集和测试集制作的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser()</span><br><span class="line"><span class="comment">#xml文件的地址，根据自己的数据进行修改 xml一般存放在Annotations下</span></span><br><span class="line">parser.add_argument(<span class="string">&#x27;--xml_path&#x27;</span>, default=<span class="string">&#x27;Annotations&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, <span class="built_in">help</span>=<span class="string">&#x27;input xml label path&#x27;</span>)</span><br><span class="line"><span class="comment">#数据集的划分，地址选择自己数据下的ImageSets/Main</span></span><br><span class="line">parser.add_argument(<span class="string">&#x27;--txt_path&#x27;</span>, default=<span class="string">&#x27;ImageSets/Main&#x27;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, <span class="built_in">help</span>=<span class="string">&#x27;output txt label path&#x27;</span>)</span><br><span class="line">opt = parser.parse_args()</span><br><span class="line"></span><br><span class="line">trainval_percent = <span class="number">1.0</span>  <span class="comment"># 训练集和验证集所占比例。 这里没有划分测试集</span></span><br><span class="line">train_percent = <span class="number">0.9</span>     <span class="comment"># 训练集所占比例，可自己进行调整</span></span><br><span class="line">xmlfilepath = opt.xml_path</span><br><span class="line">txtsavepath = opt.txt_path</span><br><span class="line">total_xml = os.listdir(xmlfilepath)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(txtsavepath):</span><br><span class="line">    os.makedirs(txtsavepath)</span><br><span class="line"></span><br><span class="line">num = <span class="built_in">len</span>(total_xml)</span><br><span class="line">list_index = <span class="built_in">range</span>(num)</span><br><span class="line">tv = <span class="built_in">int</span>(num * trainval_percent)</span><br><span class="line">tr = <span class="built_in">int</span>(tv * train_percent)</span><br><span class="line">trainval = random.sample(list_index, tv)</span><br><span class="line">train = random.sample(trainval, tr)</span><br><span class="line"></span><br><span class="line">file_trainval = <span class="built_in">open</span>(txtsavepath + <span class="string">&#x27;/trainval.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">file_test = <span class="built_in">open</span>(txtsavepath + <span class="string">&#x27;/test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">file_train = <span class="built_in">open</span>(txtsavepath + <span class="string">&#x27;/train.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">file_val = <span class="built_in">open</span>(txtsavepath + <span class="string">&#x27;/val.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> list_index:</span><br><span class="line">    name = total_xml[i][:-<span class="number">4</span>] + <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> i <span class="keyword">in</span> trainval:</span><br><span class="line">        file_trainval.write(name)</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> train:</span><br><span class="line">            file_train.write(name)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            file_val.write(name)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        file_test.write(name)</span><br><span class="line"></span><br><span class="line">file_trainval.close()</span><br><span class="line">file_train.close()</span><br><span class="line">file_val.close()</span><br><span class="line">file_test.close()</span><br></pre></td></tr></table></figure>
+<p>会产生一个ImageSets里面有一个Main，main文件夹里有四个文件，分别用来训练和测试的。</p>
+<p>（3）利用pt模型</p>
+<p>在yolov5文件夹新建一个weights文件夹，将yolov5s.pt复制一个放进去。</p>
+<p>到这里数据集就制作完成了。</p>
+<h3 id="四、配置模型">四、配置模型</h3>
+<h4 id="4-1-修改数据配置文件">4.1 修改数据配置文件</h4>
+<p>（1）选择适当的模型</p>
+<p>选择一个模型，在yolov5目录下的model文件夹下是模型的配置文件，有n、s、m、l、x版本，逐渐增大（随着架构的增大，训练时间也是逐渐增大）。</p>
+<p>这里选用 yolov5s.yaml</p>
+<p>打开yolov5/models里面选择yolov5s.yaml</p>
+<p>修改参数</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_1e12c173.png" alt="pic_1e12c173.png"></p>
+<p>(2)yolov5/data文件夹里配置mydata.yaml</p>
+<p>创建一个txt，根据具体情况来创建</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">train: D:/Yolov5/yolov5/VOCData/dataSet_path/train.txt <span class="comment">#训练文件地址</span></span><br><span class="line">val: D:/Yolov5/yolov5/VOCData/dataSet_path/val.txt <span class="comment">#测试文件地址</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># number of classes 类别个数</span></span><br><span class="line">nc: <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># class names 类别名字</span></span><br><span class="line">names: [<span class="string">&quot;light&quot;</span>, <span class="string">&quot;post&quot;</span>]</span><br></pre></td></tr></table></figure>
+<p>配置文件成功！</p>
+<h3 id="五、开始训练-模型的使用">五、开始训练 模型的使用</h3>
+<p>打开yolov5 目录下的 <a target="_blank" rel="noopener" href="http://train.py">train.py</a> 程序，我们可以多看看这些参数使用。</p>
+<p>常用参数解释如下：</p>
+<p>weights：权重文件路径</p>
+<p>cfg：存储模型结构的配置文件</p>
+<p>data：存储训练、测试数据的文件</p>
+<p>epochs：指的就是训练过程中整个数据集将被迭代（训练）了多少次，显卡不行你就调小点。</p>
+<p>batch-size：训练完多少张图片才进行权重更新，显卡不行就调小点。</p>
+<p>img-size：输入图片宽高，显卡不行就调小点。</p>
+<p>device：cuda device, i.e. 0 or 0,1,2,3 or cpu。选择使用GPU还是CPU</p>
+<p>workers：线程数。默认是8。</p>
+<p>其他：</p>
+<p>noautoanchor：不自动检验更新anchors<br>
+rect：进行矩形训练</p>
+<p>resume：恢复最近保存的模型开始训练</p>
+<p>nosave：仅保存最终checkpoint</p>
+<p>notest：仅测试最后的epoch</p>
+<p>evolve：进化超参数</p>
+<p>bucket：gsutil bucket</p>
+<p>cache-images：缓存图像以加快训练速度</p>
+<p>name： 重命名results.txt to results_name.txt</p>
+<p>adam：使用adam优化</p>
+<p>multi-scale：多尺度训练，img-size +/- 50%</p>
+<p>single-cls：单类别的训练集</p>
+<p>进入pytorch环境，进入yolov5文件夹</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python train.py --weights weights/yolov5s.pt  --cfg models/cs1.yaml  --data data/mydata.yaml --epoch <span class="number">200</span> --batch-size <span class="number">2</span> --img <span class="number">640</span>   --device <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_41c5924e.png" alt="pic_41c5924e.png"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_a29c2010.png" alt="pic_a29c2010.png"></p>
+<p>问题</p>
+<p>如果出现 winerror 1455 页面太小的问题。</p>
+<p>原因是：如果你装anaconda是在c盘就不会有这个问题，安装到其他的盘，就应该去添加那个盘的虚拟内存。</p>
+<p>打开我的电脑，点开属性，点开高级设计，点开高级，在性能下边点开高级，再点开高级，在虚拟内存下打开更改。把自动管理去掉。点击你安装的盘，根据总的大小来分配</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_4b7dce03.png" alt="pic_4b7dce03.png"></p>
+<h3 id="六-、检测效果">六 、检测效果</h3>
+<h4 id="6-1-训练可视化">6.1 训练可视化</h4>
+<p>训练时或者训练后可以利用 tensorboard 查看训练可视化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=runs</span><br></pre></td></tr></table></figure>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_799b70b5.png" alt="pic_799b70b5.png"></p>
+<p>浏览器输入本地接口地址：</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:6006/">http://localhost:6006/</a></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://api.smain.cn/pics/pic_92828a7f.png" alt="pic_92828a7f.png"></p>
+<p>可以看到各种训练的可视化效果。</p>
+<h4 id="6-2-检测效果">6.2 检测效果</h4>
+<p>检测的命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python detect.py --source <span class="number">0</span>  <span class="comment"># webcam  自带摄像头</span></span><br><span class="line">                            file.jpg  <span class="comment"># image 图片</span></span><br><span class="line">                            file.mp4  <span class="comment"># video 视频</span></span><br><span class="line">                            path/  <span class="comment"># directory</span></span><br><span class="line">                            path/*.jpg  <span class="comment"># glob</span></span><br><span class="line">                            <span class="string">&#x27;https://youtu.be/NUsoVlDFqZg&#x27;</span>  <span class="comment"># YouTube</span></span><br><span class="line">                            <span class="string">&#x27;rtsp://example.com/media.mp4&#x27;</span>  <span class="comment"># RTSP, RTMP, HTTP stream</span></span><br></pre></td></tr></table></figure>
+<p>640 --device 0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[外链图片转存中...(img-GRHY9C34-<span class="number">1671794265513</span>)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[外链图片转存中...(img-slj3QnhL-<span class="number">1671794265513</span>)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**问题**</span><br><span class="line"></span><br><span class="line">如果出现 winerror <span class="number">1455</span> 页面太小的问题。</span><br><span class="line"></span><br><span class="line">原因是：如果你装anaconda是在c盘就不会有这个问题，安装到其他的盘，就应该去添加那个盘的虚拟内存。</span><br><span class="line"></span><br><span class="line">打开我的电脑，点开属性，点开高级设计，点开高级，在性能下边点开高级，再点开高级，在虚拟内存下打开更改。把自动管理去掉。点击你安装的盘，根据总的大小来分配</span><br><span class="line"></span><br><span class="line">[外链图片转存中...(img-npv89HMt-<span class="number">1671794265513</span>)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## 六 、检测效果</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 6.1 训练可视化</span></span><br><span class="line"></span><br><span class="line">训练时或者训练后可以利用 tensorboard 查看训练可视化</span><br></pre></td></tr></table></figure>
+<p>tensorboard --logdir=runs</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[外链图片转存中...(img-exFhmKj8-<span class="number">1671794265514</span>)]</span><br><span class="line"></span><br><span class="line">浏览器输入本地接口地址：</span><br><span class="line"></span><br><span class="line">http://localhost:<span class="number">6006</span>/</span><br><span class="line"></span><br><span class="line">[外链图片转存中...(img-r596wi5X-<span class="number">1671794265514</span>)]</span><br><span class="line"></span><br><span class="line">可以看到各种训练的可视化效果。</span><br><span class="line"></span><br><span class="line"><span class="comment">### 6.2 检测效果</span></span><br><span class="line"></span><br><span class="line">检测的命令：</span><br></pre></td></tr></table></figure>
+<p>python <a target="_blank" rel="noopener" href="http://detect.py">detect.py</a> --source 0 # webcam 自带摄像头<br>
+file.jpg # image 图片<br>
+file.mp4 # video 视频<br>
+path/ # directory<br>
+path/*.jpg # glob<br>
+‘<a target="_blank" rel="noopener" href="https://youtu.be/NUsoVlDFqZg%E2%80%99">https://youtu.be/NUsoVlDFqZg’</a> # YouTube<br>
+‘rtsp://example.com/media.mp4’ # RTSP, RTMP, HTTP stream</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python detect.py --weights runs/train/exp11/weights/best.pt --source D:\yolo\yolov5\VOCcs\pig.mp4</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__title"><span class="post-copyright-info"><h>yolov5 macre</h></span></div><div class="post-copyright__type"><span class="post-copyright-info"><a href="https://macre.cn/posts/56ab7aeb.html">https://macre.cn/posts/56ab7aeb.html</a></span></div><div class="post-copyright-m"><div class="post-copyright-m-info"><div class="post-copyright-a"><h>作者</h><div class="post-copyright-cc-info"><h>Macre</h></div></div><div class="post-copyright-c"><h>发布于</h><div class="post-copyright-cc-info"><h>2023-04-05</h></div></div><div class="post-copyright-u"><h>更新于</h><div class="post-copyright-cc-info"><h>2025-02-21</h></div></div><div class="post-copyright-c"><h>许可协议</h><div class="post-copyright-cc-info"><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a rel="noopener" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></div></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/yolo/"><div class="tags-punctuation"><svg class="faa-tada icon" style="height:1.1em;width:1.1em;fill:currentColor;position:relative;top:2px;margin-right:3px" aria-hidden="true"><use xlink:href="#icon-sekuaibiaoqian"></use></svg></div>yolo</a><a class="post-meta__tags" href="/tags/%E7%9B%AE%E6%A0%87%E8%AF%86%E5%88%AB/"><div class="tags-punctuation"><svg class="faa-tada icon" style="height:1.1em;width:1.1em;fill:currentColor;position:relative;top:2px;margin-right:3px" aria-hidden="true"><use xlink:href="#icon-sekuaibiaoqian"></use></svg></div>目标识别</a></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/9a82951d.html"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/cover/post/3.png" onerror="onerror=null;src='/assets/r2.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">深度优先搜索算法</div></div></a></div><div class="next-post pull-right"><a href="/posts/2013454d.html"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/cover/post/5.png" onerror="onerror=null;src='/assets/r2.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Markdown语法与外挂标签写法汇总</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><svg class="meta_icon" style="width:22px;height:22px;position:relative;top:5px"><use xlink:href="#icon-mulu1"></use></svg><span style="font-weight:bold">目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#yolov5-%EF%BC%88Macre%EF%BC%89"><span class="toc-text">yolov5 （Macre）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95"><span class="toc-text">文章目录</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81yolov5%E4%BB%8B%E7%BB%8D"><span class="toc-text">一、yolov5介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%9B%9B%E7%A7%8D%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-text">1 四种网络模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-yolov5-%E8%BE%93%E5%85%A5%E7%BB%93%E6%9E%84"><span class="toc-text">2 yolov5 输入结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-Mosaic%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="toc-text">2.1 Mosaic数据增强</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-%E8%87%AA%E9%80%82%E5%BA%94%E9%94%9A%E6%A1%86%E8%AE%A1%E7%AE%97"><span class="toc-text">2.2 自适应锚框计算</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-3-%E8%87%AA%E9%80%82%E5%BA%94%E5%9B%BE%E7%89%87%E7%BC%A9%E6%94%BE"><span class="toc-text">2.3 自适应图片缩放</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Backbone-%E4%B8%BB%E5%B9%B2%E7%BD%91"><span class="toc-text">3 Backbone 主干网</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-Focus%E7%BB%93%E6%9E%84"><span class="toc-text">3.1 Focus结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-CSP%E7%BB%93%E6%9E%84"><span class="toc-text">3.2 CSP结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Neck"><span class="toc-text">4 Neck</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E8%BE%93%E5%87%BA%E7%AB%AF"><span class="toc-text">5 输出端</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-Bounding-box%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">5.1 Bounding box损失函数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-nms%E9%9D%9E%E6%9E%81%E5%A4%A7%E5%80%BC%E6%8A%91%E5%88%B6"><span class="toc-text">5.2 nms非极大值抑制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">二、环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81anaconda"><span class="toc-text">1、anaconda</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-1-%E4%B8%8B%E8%BD%BD"><span class="toc-text">1.1 下载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-%E5%AE%89%E8%A3%85"><span class="toc-text">1.2 安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-3-Anaconda-Navigator-%E5%B0%9D%E8%AF%95"><span class="toc-text">1.3 Anaconda Navigator 尝试</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E5%88%A9%E7%94%A8Anaconda-Promp%E5%88%9B%E5%BB%BA%E6%96%B0%E7%8E%AF%E5%A2%83"><span class="toc-text">2、利用Anaconda Promp创建新环境</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E7%8E%AF%E5%A2%83"><span class="toc-text">2.1 创建新的环境</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-2-%E6%BF%80%E6%B4%BB%E6%96%B0%E7%9A%84%E7%8E%AF%E5%A2%83"><span class="toc-text">2.2 激活新的环境</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81yolov5-%E6%A1%86%E6%9E%B6%E9%83%A8%E7%BD%B2"><span class="toc-text">3、yolov5 框架部署</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-%E5%85%8B%E9%9A%86gitgub%E4%B8%8A%E7%9A%84%E9%A1%B9%E7%9B%AE"><span class="toc-text">3.1 克隆gitgub上的项目</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="toc-text">3.2 文件结构说明</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-%E6%A3%80%E6%B5%8B%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E6%88%90%E5%8A%9F"><span class="toc-text">3.3 检测配置是否成功</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E4%B8%BAyolo%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AEpytorch-gpu%E7%89%88%E6%9C%AC"><span class="toc-text">4 为yolo环境配置pytorch gpu版本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AEgpu%E7%9A%84CUDA"><span class="toc-text">5 配置gpu的CUDA</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-%E6%9F%A5%E7%9C%8B%E6%AD%A3%E7%A1%AE%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-text">5.1 查看正确的版本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%AE%89%E8%A3%85"><span class="toc-text">5.2 下载和安装</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E6%88%90%E5%8A%9F"><span class="toc-text">测试环境是否安装成功</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#cuDNN%E9%85%8D%E7%BD%AE"><span class="toc-text">cuDNN配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%B6%E4%BD%9C%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">三、制作数据集</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1%E8%8E%B7%E5%8F%96%E8%A7%86%E9%A2%91%E5%92%8C%E8%A7%86%E9%A2%91%E8%BD%AC%E5%9B%BE%E7%89%87"><span class="toc-text">3.1获取视频和视频转图片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E4%BD%BF%E7%94%A8labelimg%E6%9D%A5%E5%88%B6%E4%BD%9Cyolotxt%E6%95%B0%E6%8D%AE"><span class="toc-text">3.2 使用labelimg来制作yolotxt数据</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-1-labelimg-%E4%BB%8B%E7%BB%8D"><span class="toc-text">3.2.1 labelimg 介绍</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-2-%E4%B8%8B%E8%BD%BD"><span class="toc-text">3.2.2 下载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-3-%E6%A0%87%E6%B3%A8"><span class="toc-text">3.2.3 标注</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-4-yolo%E4%BA%A7%E7%94%9F%E7%9A%84txt%E6%95%B0%E6%8D%AE"><span class="toc-text">3.2.4 yolo产生的txt数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-5-voc%E6%95%B0%E6%8D%AE%E4%BA%A7%E7%94%9F%E7%9A%84xml"><span class="toc-text">3.2.5 voc数据产生的xml</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-6-%E6%95%B0%E6%8D%AE%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">3.2.6 数据之间的转换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-7-%E6%95%B0%E6%8D%AE%E9%9B%86%E6%96%87%E4%BB%B6%E5%A4%B9%E7%BB%93%E6%9E%84"><span class="toc-text">3.2.7 数据集文件夹结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-8-%E8%AE%AD%E7%BB%83%E9%9B%86%E5%92%8C%E6%B5%8B%E8%AF%95%E9%9B%86%E5%88%B6%E4%BD%9C"><span class="toc-text">3.2.8 训练集和测试集制作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9E%8B"><span class="toc-text">四、配置模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">4.1 修改数据配置文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%BC%80%E5%A7%8B%E8%AE%AD%E7%BB%83-%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">五、开始训练 模型的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD-%E3%80%81%E6%A3%80%E6%B5%8B%E6%95%88%E6%9E%9C"><span class="toc-text">六 、检测效果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-%E8%AE%AD%E7%BB%83%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">6.1 训练可视化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-%E6%A3%80%E6%B5%8B%E6%95%88%E6%9E%9C"><span class="toc-text">6.2 检测效果</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-color: transparent;"><div id="footer-wrap"><div id="ft"><div class="ft-item-1"><div class="t-top"><div class="t-t-l"><p class="ft-t t-l-t">格言🧬</p><div class="bg-ad"><div>再看看那个光点，它就在这里，这是家园，这是我们 —— 你所爱的每一个人，你认识的一个人，你听说过的每一个人，曾经有过的每一个人，都在它上面度过他们的一生✨</div><div class="btn-xz-box"><a class="btn-xz" target="_blank" rel="noopener" href="https://stellarium.org/">点击开启星辰之旅</a></div></div></div><div class="t-t-r"><p class="ft-t t-l-t">猜你想看💡</p><ul class="ft-links"><li><a href="/social/link/">我的朋友</a><a href="/comments/">留点什么</a></li><li><a href="/personal/about/">关于作者</a><a href="/archives/">文章归档</a></li><li><a href="/categories/">文章分类</a><a href="/tags/">文章标签</a></li><li><a href="/box/Gallery/">我的画廊</a><a href="/personal/bb/">我的唠叨</a></li><li><a href="/site/time/">建设进程</a><a href="/site/census/">网站统计</a></li></ul></div></div></div><div class="ft-item-2"><p class="ft-t">推荐友链⌛</p><div class="ft-img-group"><div class="img-group-item"><a target="_blank" rel="noopener" href="https://www.fomal.cc/" title="Fomalhaut🥝"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/60e5d4e39da7c077.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div><div class="img-group-item"><a href="javascript:void(0)" title="广告位招租"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://lskypro.acozycotage.net/LightPicture/2022/12/65307a5828af6790.webp" alt=""/></a></div></div></div></div><div class="copyright"><span><b>&copy;2022-2025</b></span><span><b>&nbsp;&nbsp;By Macre</b></span></div><div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v6.3.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=for-the-badge&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v4.3.1"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-red?style=for-the-badge&amp;logo=brevo" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" title="本站采用多线部署，主线路托管于Vercel"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-green?style=for-the-badge&amp;logo=vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://user.51.la/" style="margin-inline:5px" title="本站数据分析得益于51la技术支持"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Analytics-51la-pink?style=for-the-badge&amp;logo=googleanalytics" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" title="本网站源码由Github提供存储仓库"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src=" https://img.shields.io/badge/Source-github-blue?style=for-the-badge&amp;logo=github" alt=""/></a></p></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><a class="icon-V hidden" onclick="switchNightMode()" title="浅色和深色模式转换"><svg width="25" height="25" viewBox="0 0 1024 1024"><use id="modeicon" xlink:href="#icon-moon"></use></svg></a><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button><button class="share" type="button" title="右键模式" onclick="changeMouseMode()"><i class="fas fa-mouse"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog right_side"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button class="share" type="button" title="分享链接" onclick="share()"><i class="fas fa-share-nodes"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i><span id="percent">0<span>%</span></span></button><button id="go-down" type="button" title="直达底部" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="fas fa-arrow-down"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div class="js-pjax" id="rightMenu"><div class="rightMenu-group rightMenu-small"><a class="rightMenu-item" href="javascript:window.history.back();"><i class="fa fa-arrow-left"></i></a><a class="rightMenu-item" href="javascript:window.history.forward();"><i class="fa fa-arrow-right"></i></a><a class="rightMenu-item" href="javascript:window.location.reload();"><i class="fa fa-refresh"></i></a><a class="rightMenu-item" href="javascript:rmf.scrollToTop();"><i class="fa fa-arrow-up"></i></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-text"><a class="rightMenu-item" href="javascript:rmf.copySelect();"><i class="fa fa-copy"></i><span>复制</span></a><a class="rightMenu-item" href="javascript:window.open(&quot;https://www.baidu.com/s?wd=&quot;+window.getSelection().toString());window.location.reload();"><i class="fa fa-search"></i><span>百度搜索</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-too"><a class="rightMenu-item" href="javascript:window.open(window.getSelection().toString());window.location.reload();"><i class="fa fa-link"></i><span>转到链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-paste"><a class="rightMenu-item" href="javascript:rmf.paste()"><i class="fa fa-copy"></i><span>粘贴</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-post"><a class="rightMenu-item" href="#post-comment"><i class="fas fa-comment"></i><span>空降评论</span></a><a class="rightMenu-item" href="javascript:rmf.copyWordsLink()"><i class="fa fa-link"></i><span>复制本文地址</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-to"><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>新窗口打开</span></a><a class="rightMenu-item" id="menu-too" href="javascript:rmf.open()"><i class="fa fa-link"></i><span>转到链接</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制链接</span></a></div><div class="rightMenu-group rightMenu-line hide" id="menu-img"><a class="rightMenu-item" href="javascript:rmf.saveAs()"><i class="fa fa-download"></i><span>保存图片</span></a><a class="rightMenu-item" href="javascript:rmf.openWithNewTab()"><i class="fa fa-window-restore"></i><span>在新窗口打开</span></a><a class="rightMenu-item" href="javascript:rmf.copyLink()"><i class="fa fa-copy"></i><span>复制图片链接</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item" href="javascript:randomPost()"><i class="fa fa-paper-plane"></i><span>随便逛逛</span></a><a class="rightMenu-item" href="javascript:switchNightMode();"><i class="fa fa-moon"></i><span>昼夜切换</span></a><a class="rightMenu-item" href="/personal/about/"><i class="fa fa-info-circle"></i><span>关于博客</span></a><a class="rightMenu-item" href="javascript:toggleWinbox();"><i class="fas fa-cog"></i><span>美化设置</span></a><a class="rightMenu-item" href="javascript:rmf.fullScreen();"><i class="fas fa-expand"></i><span>切换全屏</span></a><a class="rightMenu-item" href="javascript:window.print();"><i class="fa-solid fa-print"></i><span>打印页面</span></a></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/4.0.31/fancybox.umd.min.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())
+setTimeout(function(){preloader.endLoading();}, 5000);
+document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: '',
+      region: '',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: '',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.staticfile.org/twikoo/1.6.8/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script src="https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js"></script><script async src="https://cdn1.tianli0.top/npm/vue@2.6.14/dist/vue.min.js"></script><script async src="https://cdn1.tianli0.top/npm/element-ui@2.15.6/lib/index.js"></script><script async src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script><script defer type="text/javascript" src="https://cdn1.tianli0.top/npm/sweetalert2@8.19.0/dist/sweetalert2.all.js"></script><script async src="//npm.elemecdn.com/pace-js@1.2.4/pace.min.js"></script><script defer src="https://cdn1.tianli0.top/gh/nextapps-de/winbox/dist/winbox.bundle.min.js"></script><script async src="//at.alicdn.com/t/c/font_3586335_hsivh70x0fm.js"></script><script async src="//at.alicdn.com/t/c/font_3636804_gr02jmjr3y9.js"></script><script async src="//at.alicdn.com/t/c/font_3612150_kfv55xn3u2g.js"></script><script async src="https://cdn.wpon.cn/2022-sucai/Gold-ingot.js"></script><canvas id="universe"></canvas><canvas id="snow"></canvas><script defer src="/js/fomal.js"></script><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn1.tianli0.top/npm/js-heo@1.0.12/metingjs/Meting.min.js"></script><script src="https://lib.baomitu.com/pjax/0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show","#web_bg",".js-pjax","#bibi","body > title","#app","#tag-echarts","#posts-echart","#categories-echarts"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="https://macre.cn/categories/算法/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🍡 Macreの算法学习笔记 (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://macre.cn/categories/诗歌/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🍟 Macreの诗文 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://macre.cn/categories/机器学习/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🍉 Macreの机器学习 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://macre.cn/categories/深度学习/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🍨 Macreの深度学习 (5)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://macre.cn/categories/硬件/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🍥 Macreの硬件笔记 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="https://macre.cn/categories/" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(33.333333333333336% - 5px);background: #e9e9e9;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: var(--text-bg-hover)}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/2013454d.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/cover/post/5.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-08-09</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/2013454d.html&quot;);" href="javascript:void(0);" alt="">Markdown语法与外挂标签写法汇总</a><div class="blog-slider__text">🥧本文汇总Markdown格式以及外挂标签在网页端的渲染效果，可作为文档进行查询</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/2013454d.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" onclick="pjax.loadUrl(&quot;posts/9a82951d.html&quot;);" href="javascript:void(0);" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://macre.oss-cn-shenzhen.aliyuncs.com/Macre_Blog/post/cover/post/3.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2023-05-26</span><a class="blog-slider__title" onclick="pjax.loadUrl(&quot;posts/9a82951d.html&quot;);" href="javascript:void(0);" alt="">深度优先搜索算法</a><div class="blog-slider__text">dfs算法的学习来自acwing</div><a class="blog-slider__button" onclick="pjax.loadUrl(&quot;posts/9a82951d.html&quot;);" href="javascript:void(0);" alt="">详情       </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '2s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" id="gitcalendarBar" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 320px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/site/census/'|| '/site/census/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("/api?null",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'null')
+    }
+  </script><script data-pjax src="https://unpkg.com/oh-my-live2d"></script><script>const oml2d = OML2D.loadOml2d({dockedPosition:"left",mobileDisplay:true,models:[{"path":"https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json","mobilePosition":[-10,23],"mobileScale":0.1,"mobileStageStyle":{"width":180,"height":166},"motionPreloadStrategy":"IDLE","position":[-10,35],"scale":0.15,"stageStyle":{"width":250,"height":250}},{"path":"https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json","scale":0.12,"position":[0,0],"stageStyle":{"width":250},"mobileScale":0.08,"mobilePosition":[0,0],"mobileStageStyle":{"width":180}},{"path":"https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json","scale":0.12,"position":[0,0],"mobileScale":0.08,"mobilePosition":[0,0],"mobileStageStyle":{"width":180},"stageStyle":{"width":250}}],parentElement:document.body,primaryColor:"var(--btn-bg)",sayHello:false,tips:{style: {"width":230,"height":120,"left":"calc(50% - 20px)","top":"-100px"},mobileStyle: {"width":180,"height":80,"left":"calc(50% - 30px)","top":"-100px"},idleTips:{interval:15000,message:function(){
+  return axios.get('https://v1.hitokoto.cn?c=i')
+    .then(function (response) {
+      return response.data.hitokoto ;
+    })
+    .catch(function (error) {
+      console.error(error);
+    });
+}
+}}});</script><!-- hexo injector body_end end --></body></html>
